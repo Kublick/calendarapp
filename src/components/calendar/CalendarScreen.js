@@ -6,33 +6,30 @@ import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { messages } from "../../helpers/calendar-messages-es";
 import { CalendarEvent } from "./CalendarEvent";
+import { CalendarModal } from "./CalendarModal";
+import { useDispatch, useSelector } from "react-redux";
+import { uiOpenModal } from "../../actions/ui";
+import { eventSetActive } from "../../actions/events";
+import { AddNewFab } from "../ui/AddNewFab";
 const localizer = momentLocalizer(moment);
 
 moment.locale("es");
 
-const events = [
-	{
-		title: "Cumple",
-		start: moment().toDate(),
-		end: moment().add(2, "hours").toDate(),
-		user: {
-			_id: "123",
-			name: "Max",
-		},
-	},
-];
-
 export const CalendarScreen = () => {
+	const { events } = useSelector((state) => state.calendar);
+
+	const dispatch = useDispatch();
+
 	const [lastView, setLastView] = useState(
 		localStorage.getItem("lastView") || "month"
 	);
 
 	const onDoubleClick = (e) => {
-		console.log(e);
+		dispatch(uiOpenModal());
 	};
 
 	const onSelectEvent = (e) => {
-		console.log(e);
+		dispatch(eventSetActive(e));
 	};
 
 	const onViewChange = (e) => {
@@ -72,6 +69,10 @@ export const CalendarScreen = () => {
 				onView={onViewChange}
 				view={lastView}
 			/>
+
+			<AddNewFab />
+
+			<CalendarModal />
 		</div>
 	);
 };
