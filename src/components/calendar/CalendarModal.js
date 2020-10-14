@@ -6,9 +6,9 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModal } from "../../actions/ui";
 import {
-	eventAddNew,
 	eventClearActiveEvent,
-	eventUpdated,
+	eventStartAddNew,
+	eventStartUpdate,
 } from "../../actions/events";
 import { useEffect } from "react";
 
@@ -107,18 +107,10 @@ export const CalendarModal = () => {
 		}
 
 		if (activeEvent) {
-			dispatch(eventUpdated(formValues));
+			console.log("entro a eventStartUpdate");
+			dispatch(eventStartUpdate(formValues));
 		} else {
-			dispatch(
-				eventAddNew({
-					...formValues,
-					id: new Date().getTime(),
-					user: {
-						_id: "234",
-						nme: "Juan",
-					},
-				})
-			);
+			dispatch(eventStartAddNew(formValues));
 		}
 
 		//TODO realizar grabacion db
